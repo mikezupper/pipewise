@@ -1,0 +1,11 @@
+{
+  "everything": 11968,
+  "fetch source": 384,
+  "streaming chat": 2816,
+  "edge SSE handler": 640,
+  "minimal pipeline": 448,
+  "typical UI": 1984,
+  "log processing": 2624,
+  "testing kit": 2176,
+  "lanes": 2240
+}

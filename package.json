@@ -1,0 +1,101 @@
+{
+  "name": "pipewise",
+  "version": "1.0.0",
+  "description": "Operators for streaming responses: parse, merge, cancel, and backpressure the Web Streams that fetch, LLM APIs, and edge runtimes produce. Zero dependencies.",
+  "keywords": [
+    "streams",
+    "web-streams",
+    "streaming",
+    "sse",
+    "server-sent-events",
+    "fetch",
+    "llm",
+    "ai",
+    "edge",
+    "ndjson",
+    "readablestream",
+    "transformstream",
+    "operators",
+    "backpressure",
+    "rxjs"
+  ],
+  "license": "MIT",
+  "author": "Mike Zupper <me@mikezupper.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikezupper/pipewise.git"
+  },
+  "homepage": "https://github.com/mikezupper/pipewise#readme",
+  "bugs": "https://github.com/mikezupper/pipewise/issues",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "default": "./dist/testing/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.33.2",
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:node": "vitest run --project node",
+    "test:coverage": "vitest run --project node --project examples --coverage",
+    "test:browser": "vitest run --project browser",
+    "test:watch": "vitest --project node",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "pack:check": "publint --strict && attw --pack . --profile esm-only && node scripts/smoke-pack.mjs",
+    "check": "pnpm fmt:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:coverage && pnpm build && pnpm size && pnpm pack:check",
+    "gen": "node scripts/gen.ts && prettier --write \"src/*/index.ts\" --log-level warn",
+    "lint:actions": "docker run --rm -v \"$PWD\":/repo -w /repo rhysd/actionlint:latest -no-color",
+    "test:runtimes": "scripts/smoke-runtimes.sh",
+    "runner": "scripts/runner.sh",
+    "size": "node scripts/size.mjs",
+    "bench": "pnpm build >/dev/null && node bench/pipelines.mjs",
+    "bench:queues": "pnpm build >/dev/null && node bench/queues.mjs",
+    "example:e2e": "pnpm build >/dev/null && node examples/stream-chat/e2e.mjs",
+    "example": "pnpm build >/dev/null && node examples/stream-chat/server/main.mjs"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.4",
+    "@vitest/browser": "^5.0.3",
+    "@vitest/browser-playwright": "^5.0.3",
+    "@vitest/coverage-v8": "5.0.3",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.12.0",
+    "playwright": "^1.63.0",
+    "prettier": "^3.9.9",
+    "publint": "^0.3.25",
+    "rxjs": "7.8.2",
+    "tinybench": "^6.2.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22.18",
+      "onFail": "error"
+    }
+  }
+}

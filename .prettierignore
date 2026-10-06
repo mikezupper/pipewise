@@ -1,0 +1,7 @@
+dist
+coverage
+pnpm-lock.yaml
+.beads
+.claude
+docs/generated
+.runner

@@ -1,0 +1,111 @@
+:root {
+  color-scheme: light dark;
+  --ink: light-dark(#1d1d22, #ecebf2);
+  --muted: light-dark(#6b6b78, #a3a2b3);
+  --paper: light-dark(#fbfbfd, #151519);
+  --panel: light-dark(#f0f0f5, #202027);
+  --accent: light-dark(#4b46d6, #a9a6ff);
+  --ok: light-dark(#1f7a4d, #6fd6a2);
+  --warn: light-dark(#9a5b00, #f2b866);
+  --bad: light-dark(#b42318, #ff8a80);
+  font:
+    16px/1.5 system-ui,
+    sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+h1 {
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+}
+
+header p,
+#metrics {
+  color: var(--muted);
+}
+
+form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+label {
+  position: absolute;
+  clip-path: inset(50%);
+}
+
+input {
+  flex: 1 1 16rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--muted);
+  border-radius: 0.5rem;
+  background: var(--panel);
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--paper);
+  font: inherit;
+  cursor: pointer;
+}
+
+button#stop {
+  background: var(--panel);
+  color: var(--ink);
+}
+
+#answer {
+  min-height: 6rem;
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: var(--panel);
+  white-space: pre-wrap;
+}
+
+#answer:empty::before {
+  content: "The answer streams here.";
+  color: var(--muted);
+}
+
+#wire {
+  margin: 0;
+  padding-left: 1.2rem;
+  font:
+    0.85rem/1.6 ui-monospace,
+    monospace;
+}
+
+#wire [data-kind="done"] {
+  color: var(--ok);
+}
+
+#wire [data-kind="cancel"] {
+  color: var(--warn);
+}
+
+#wire [data-kind="error"] {
+  color: var(--bad);
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stream chat · pipewise</title>
+    <link rel="stylesheet" href="/client/style.css" />
+    <script type="importmap">
+      { "imports": { "pipewise": "/pipewise/index.js" } }
+    </script>
+    <script type="module" src="/client/app.mjs"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Stream chat</h1>
+        <p>
+          A streaming answer, parsed and cancelled with
+          <a href="https://github.com/mikezupper/pipewise">pipewise</a>. Ask again before an answer
+          finishes, or press Stop, and watch the wire log.
+        </p>
+      </header>
+      <form id="ask">
+        <label for="prompt">Prompt</label>
+        <input id="prompt" name="prompt" autocomplete="off" placeholder="Ask anything" required />
+        <button type="submit">Ask</button>
+        <button type="button" id="stop">Stop</button>
+      </form>
+      <section aria-live="polite">
+        <p id="answer"></p>
+        <p id="metrics"></p>
+      </section>
+      <section>
+        <h2>Wire log</h2>
+        <ol id="wire"></ol>
+      </section>
+    </main>
+  </body>
+</html>
