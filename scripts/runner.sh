@@ -15,7 +15,7 @@ if [ ! -x "$DIR/run.sh" ]; then
     tar xz -C "$DIR"
 fi
 
-if [ ! -f "$DIR/.runner" ]; then
+if [ ! -f "$DIR/.runner" ] && [ ! -f "$DIR/.runner_migrated" ]; then
   token="$(gh api -X POST "repos/${REPO}/actions/runners/registration-token" --jq .token)"
   "$DIR/config.sh" --url "https://github.com/${REPO}" --token "$token" \
     --labels pipewise --name "$(hostname)-pipewise" --unattended --replace

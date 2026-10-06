@@ -1,0 +1,1 @@
+{"id":"int-c009acb95ecb11c38b460b68b6c5dc06","kind":"field_change","created_at":"2026-10-06T14:29:17.680501542Z","actor":"Mike Zupper","issue_id":"pw-ltg","extra":{"field":"status","new_value":"closed","old_value":"in_progress","reason":"New public repo mikezupper/pipewise with single fresh commit; runner re-registered; CI run 37478821857 passed"}}
