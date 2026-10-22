@@ -1,10 +1,9 @@
-# Runs the full quality gate on the self-hosted runner (see docs/deployment.md).
+# Runs the full quality gate on disposable Xode workers (see docs/deployment.md).
 name: ci
 
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -16,19 +15,24 @@ permissions:
 
 jobs:
   check:
-    # Never run code from forks on the self-hosted machine.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, pipewise]
+    runs-on: xode-linux-x64
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Prepare the fresh worker
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y build-essential python3 xz-utils unzip
+          sudo mkdir -p "$RUNNER_TOOL_CACHE"
+          sudo chown "$(id -u):$(id -g)" "$RUNNER_TOOL_CACHE"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
           node-version: 24
-          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install chromium firefox webkit
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm check
       - run: pnpm test:runtimes
       - run: pnpm example:e2e

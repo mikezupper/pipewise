@@ -1,2 +1,2 @@
 self-hosted-runner:
-  labels: [pipewise]
+  labels: [xode-linux-x64]
