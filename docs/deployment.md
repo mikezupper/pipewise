@@ -1,44 +1,31 @@
 # Deployment
 
-pipewise is published to npm from GitHub Actions. The workflows run on a
-self-hosted runner on the maintainer's Linux machine, not on GitHub's hosts.
-The runner lives in this repository and runs only during development sessions,
-so CI jobs run only while it is up.
+pipewise is published to npm from GitHub Actions. Both workflows use label `xode-linux-x64`
+through this personal repository's registration on the existing Xode US and EU hosts. There is
+no GitHub-hosted fallback and no runner on the development machine.
 
 ## Workflows
 
-| Workflow                        | Trigger                                      | Does                                                   |
-| ------------------------------- | -------------------------------------------- | ------------------------------------------------------ |
-| `.github/workflows/ci.yml`      | Push to `main`, pull requests from this repo | `pnpm check`, `pnpm test:runtimes`, `pnpm example:e2e` |
-| `.github/workflows/release.yml` | Tag `v*.*.*`                                 | `pnpm check`, `pnpm publish`, GitHub release           |
+| Workflow                        | Trigger                         | Does                                                   |
+| ------------------------------- | ------------------------------- | ------------------------------------------------------ |
+| `.github/workflows/ci.yml`      | Push to `main`, manual dispatch | `pnpm check`, `pnpm test:runtimes`, `pnpm example:e2e` |
+| `.github/workflows/release.yml` | Tag `v*.*.*`                    | `pnpm check`, `pnpm publish`, GitHub release           |
 
-Pull requests from forks never run. A self-hosted runner executes whatever a
-workflow tells it to, so running a stranger's branch would hand them the machine.
+Pull-request events are rejected by the fleet's mandatory job-start hook. Review outside
+contributions before executing their code. Only trusted users may push branches or tags that
+reach these workers. Release permissions and the `npm` environment remain unchanged.
 
-## The runner
+## The runners
 
-The runner lives in `.runner/` inside the repository, which git ignores. It
-is not a system service. It runs only during development sessions.
+The private `mikezupper/xode-actions-runners` repository owns fleet enrollment and operations.
+Each host has two slots, each with its own bounded workspace and Docker daemon. Workers install
+Node, pnpm, Bun and browser system dependencies afresh. The fleet removes their workspace, images,
+volumes and build cache after the runner process exits. No Actions dependency cache is uploaded.
 
-```sh
-pnpm runner
-```
-
-The first run downloads the runner and registers it with GitHub using your
-`gh` login, with the labels `self-hosted`, `linux`, and `pipewise`. Later runs
-start it straight away. It runs in the foreground; stop it with Ctrl+C. An
-agent working in this repository starts it when you say "start the service".
-
-While the runner is stopped, pushes still queue CI jobs, which start the next
-time it runs. GitHub cancels jobs queued for more than 24 hours; restart them
-with **Re-run jobs**. Start the runner before pushing a release tag.
-
-The workflows install Node and pnpm themselves. Playwright's browsers are
-cached in `~/.cache/ms-playwright` after the first run. If WebKit fails to
-launch, run `pnpm exec playwright install-deps webkit` once with sudo.
-
-To remove the runner, unregister it on **Settings → Actions → Runners**, then
-delete `.runner/`.
+The old `.runner/` installation and `pnpm runner` bootstrap were retired on 2026-10-22. Do not
+restore those credentials or reinstall a local runner. If a job stays queued, inspect GitHub's
+run and the Xode controller status using the infrastructure operations guide; starting a runner
+on the workstation is not part of recovery.
 
 ## Configure publishing (once)
 

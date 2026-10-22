@@ -19,11 +19,10 @@ system of record.
 
 ## CI runner
 
-CI runs on a self-hosted runner that lives in `.runner/` (gitignored) and runs
-only during development sessions. When the maintainer says "start the
-service", run `pnpm runner` as a background task and leave it running. Stop
-it when they ask or when the session ends. Never install it as a system
-service or outside this directory. Details: [docs/deployment.md](docs/deployment.md).
+CI uses disposable Xode workers (`xode-linux-x64`) through this personal repository's
+registration. Do not install or start a runner on the development machine. Trusted main pushes
+and manual runs execute CI; version tags retain the existing release workflow. The fleet rejects
+pull-request events. Details: [docs/deployment.md](docs/deployment.md).
 
 ## Where things are
 

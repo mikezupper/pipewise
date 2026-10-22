@@ -14,16 +14,23 @@ permissions:
 
 jobs:
   publish:
-    runs-on: [self-hosted, linux, pipewise]
+    runs-on: xode-linux-x64
     timeout-minutes: 20
     environment: npm
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Prepare the fresh worker
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y build-essential python3 xz-utils unzip gh
+          sudo mkdir -p "$RUNNER_TOOL_CACHE"
+          sudo chown "$(id -u):$(id -g)" "$RUNNER_TOOL_CACHE"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
           node-version: 24
-          cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
       - name: Tag must match package.json version
@@ -33,7 +40,7 @@ jobs:
             echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${version}"
             exit 1
           fi
-      - run: pnpm exec playwright install chromium firefox webkit
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm check
       - run: pnpm publish --access public --no-git-checks
         env:

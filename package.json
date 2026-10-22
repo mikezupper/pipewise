@@ -65,7 +65,6 @@
     "gen": "node scripts/gen.ts && prettier --write \"src/*/index.ts\" --log-level warn",
     "lint:actions": "docker run --rm -v \"$PWD\":/repo -w /repo rhysd/actionlint:latest -no-color",
     "test:runtimes": "scripts/smoke-runtimes.sh",
-    "runner": "scripts/runner.sh",
     "size": "node scripts/size.mjs",
     "bench": "pnpm build >/dev/null && node bench/pipelines.mjs",
     "bench:queues": "pnpm build >/dev/null && node bench/queues.mjs",
