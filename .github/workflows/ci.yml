@@ -34,5 +34,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm check
+      # The stream-chat example launches Bun directly; Deno runs in the job's Docker daemon.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+          no-cache: true
       - run: pnpm test:runtimes
       - run: pnpm example:e2e

@@ -19,7 +19,7 @@ reach these workers. Release permissions and the `npm` environment remain unchan
 
 The private `mikezupper/xode-actions-runners` repository owns fleet enrollment and operations.
 Each host has two slots, each with its own bounded workspace and Docker daemon. Workers install
-Node, pnpm and browser system dependencies afresh. The fleet removes their workspace, images,
+Node, pnpm, Bun and browser system dependencies afresh. The fleet removes their workspace, images,
 volumes and build cache after the runner process exits. No Actions dependency cache is uploaded.
 
 The old `.runner/` installation and `pnpm runner` bootstrap were retired on 2026-10-22. Do not
